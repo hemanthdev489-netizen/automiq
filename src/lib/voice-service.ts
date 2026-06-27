@@ -14,8 +14,17 @@ const voiceRequestSchema = z.object({
   ).optional(),
 });
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || import.meta.env.VITE_OPENAI_API_KEY || "";
-const SARVAM_API_KEY = process.env.SARVAM_API_KEY || import.meta.env.VITE_SARVAM_API_KEY || "";
+const OPENAI_API_KEY = 
+  (typeof process !== "undefined" ? process.env.OPENAI_API_KEY : undefined) || 
+  (typeof globalThis !== "undefined" ? (globalThis as any).OPENAI_API_KEY : undefined) || 
+  import.meta.env.VITE_OPENAI_API_KEY || 
+  "";
+
+const SARVAM_API_KEY = 
+  (typeof process !== "undefined" ? process.env.SARVAM_API_KEY : undefined) || 
+  (typeof globalThis !== "undefined" ? (globalThis as any).SARVAM_API_KEY : undefined) || 
+  import.meta.env.VITE_SARVAM_API_KEY || 
+  "";
 
 // Helper to call Sarvam AI TTS for a sentence chunk
 async function callSarvamTts(text: string, languageCode: string): Promise<string> {
