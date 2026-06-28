@@ -22,7 +22,9 @@ interface ChatMessage {
 }
 
 const SpeechRecognitionClass = typeof window !== "undefined"
-  ? ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)
+  ? (typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+      ? null // Bypass native speech recognition on mobile to avoid Google/system recording overlays
+      : ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition))
   : null;
 
 export function VoiceBotWidget() {
