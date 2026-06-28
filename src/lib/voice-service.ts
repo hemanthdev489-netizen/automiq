@@ -178,10 +178,14 @@ Your instructions:
 
             messages.push({ role: "user", content: transcript });
 
+            const resolvedKey = getOpenAiKey();
+            console.log(`[VoiceService] Resolved OpenAI key length: ${resolvedKey.length}, starts with: ${resolvedKey.substring(0, 8)}...`);
+            console.log(`[VoiceService] __env__ keys: ${typeof globalThis !== 'undefined' && (globalThis as any).__env__ ? Object.keys((globalThis as any).__env__).join(', ') : 'N/A'}`);
+
             const openAiRes = await fetch("https://api.openai.com/v1/chat/completions", {
               method: "POST",
               headers: {
-                "Authorization": `Bearer ${getOpenAiKey()}`,
+                "Authorization": `Bearer ${resolvedKey}`,
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
@@ -194,7 +198,9 @@ Your instructions:
             });
 
             if (!openAiRes.ok) {
-              throw new Error(`OpenAI stream call failed: ${openAiRes.statusText}`);
+              const errBody = await openAiRes.text();
+              console.error(`[VoiceService] OpenAI error ${openAiRes.status}: ${errBody}`);
+              throw new Error(`OpenAI stream call failed: ${openAiRes.status} ${openAiRes.statusText} — ${errBody}`);
             }
 
             const reader = openAiRes.body?.getReader();
