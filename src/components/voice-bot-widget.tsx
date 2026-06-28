@@ -727,196 +727,260 @@ export function VoiceBotWidget() {
               </button>
             </div>
 
-            {/* Settings Bar: Language Selection & Focus Mode Toggle */}
-            <div className="px-6 py-2 bg-background/30 border-b border-border/40 flex flex-col gap-2">
-              <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-[0.65rem] tracking-wider text-muted-foreground uppercase">Agent Language</span>
-                <select
-                  value={languageCode}
-                  onChange={(e) => setLanguageCode(e.target.value)}
-                  className="bg-card border border-border/80 text-xs rounded-full px-3 py-1 font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-accent cursor-pointer"
-                  disabled={isSessionActive}
-                >
-                  {LANGUAGES.map((lang) => (
-                    <option key={lang.code} value={lang.code}>
-                      {lang.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="h-px bg-border/20 w-full" />
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex flex-col">
-                  <span className="font-mono text-[0.65rem] tracking-wider text-muted-foreground uppercase">Voice Focus Mode</span>
-                  <span className="text-[0.55rem] text-muted-foreground/60 leading-tight">Transcribe only, don't generate replies</span>
+            {/* Settings Bar: Language Selection & Focus Mode Toggle (Only when call is not active) */}
+            {!isSessionActive && (
+              <div className="px-6 py-4 bg-background/30 border-b border-border/40 flex flex-col gap-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono text-[0.65rem] tracking-wider text-muted-foreground uppercase">Agent Language</span>
+                  <select
+                    value={languageCode}
+                    onChange={(e) => setLanguageCode(e.target.value)}
+                    className="bg-card border border-border/80 text-xs rounded-full px-3 py-1 font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-accent cursor-pointer"
+                    disabled={isSessionActive}
+                  >
+                    {LANGUAGES.map((lang) => (
+                      <option key={lang.code} value={lang.code}>
+                        {lang.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <button
-                  onClick={() => setFocusMode(!focusMode)}
-                  className={`px-3 py-0.5 rounded-full text-[0.65rem] font-mono tracking-wider uppercase transition-all duration-300 border cursor-pointer ${
-                    focusMode
-                      ? "bg-accent/20 border-accent text-accent shadow-sm"
-                      : "bg-background/40 border-border/80 text-muted-foreground hover:text-foreground"
-                  }`}
-                  disabled={isSessionActive}
-                >
-                  {focusMode ? "ON" : "OFF"}
-                </button>
-              </div>
-            </div>
-
-            {/* Interactive Stage & Audio visualization */}
-            <div className="flex-1 flex flex-col overflow-hidden min-h-0 relative">
-              <div className="h-44 flex flex-col items-center justify-center border-b border-border/30 bg-background/20 relative overflow-hidden">
-                <div className="absolute inset-0 grid-lines opacity-10 pointer-events-none" />
-
-                {!isSessionActive ? (
-                  /* Welcome / Disconnected Screen */
-                  <div className="flex flex-col items-center justify-center p-6 text-center">
-                    <motion.button
-                      onClick={startSession}
-                      className="w-16 h-16 rounded-full bg-accent text-accent-foreground flex items-center justify-center shadow-lg hover:shadow-accent/40 border border-accent/25 relative group cursor-pointer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <div className="absolute inset-0 rounded-full bg-accent/25 blur-md group-hover:blur-lg transition-all scale-105" />
-                      <Phone className="w-6 h-6 relative z-10" />
-                    </motion.button>
-                    <span className="mt-3 font-mono text-[0.7rem] tracking-widest text-muted-foreground uppercase">
-                      Start Voice Call
-                    </span>
-                    {error && (
-                      <span className="text-[0.65rem] text-red-400 font-mono mt-2 max-w-[280px]">
-                        {error}
-                      </span>
-                    )}
+                <div className="h-px bg-border/20 w-full" />
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex flex-col">
+                    <span className="font-mono text-[0.65rem] tracking-wider text-muted-foreground uppercase">Voice Focus Mode</span>
+                    <span className="text-[0.55rem] text-muted-foreground/60 leading-tight">Transcribe only, don't generate replies</span>
                   </div>
-                ) : (
-                  /* Active Live Call Screen with Premium Orb visualizer */
-                  <div className="flex flex-col items-center justify-center w-full relative">
-                    <div className="relative w-32 h-32 flex items-center justify-center">
-                      {/* Outer breathing glowing wave */}
+                  <button
+                    onClick={() => setFocusMode(!focusMode)}
+                    className={`px-3 py-0.5 rounded-full text-[0.65rem] font-mono tracking-wider uppercase transition-all duration-300 border cursor-pointer ${
+                      focusMode
+                        ? "bg-accent/20 border-accent text-accent shadow-sm"
+                        : "bg-background/40 border-border/80 text-muted-foreground hover:text-foreground"
+                    }`}
+                    disabled={isSessionActive}
+                  >
+                    {focusMode ? "ON" : "OFF"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Main Stage */}
+            <div className="flex-1 flex flex-col overflow-hidden min-h-0 relative">
+              {!isSessionActive ? (
+                /* Welcome / Disconnected Screen */
+                <div className="flex-1 flex flex-col items-center justify-center p-6 text-center relative">
+                  <div className="absolute inset-0 grid-lines opacity-10 pointer-events-none" />
+                  <motion.button
+                    onClick={startSession}
+                    className="w-20 h-20 rounded-full bg-accent text-accent-foreground flex items-center justify-center shadow-lg hover:shadow-accent/40 border border-accent/25 relative group cursor-pointer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="absolute inset-0 rounded-full bg-accent/25 blur-md group-hover:blur-lg transition-all scale-105" />
+                    <Phone className="w-8 h-8 relative z-10" />
+                  </motion.button>
+                  <span className="mt-4 font-mono text-[0.7rem] tracking-[0.2em] text-muted-foreground uppercase">
+                    Start Voice Call
+                  </span>
+                  {error && (
+                    <span className="text-[0.65rem] text-red-400 font-mono mt-2 max-w-[280px]">
+                      {error}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                /* Active ElevenLabs-style Orb calling interface */
+                <div className="flex-1 flex flex-col items-center justify-between p-6 pb-8 min-h-0 relative bg-gradient-to-b from-card/10 via-background/25 to-background/50">
+                  <div className="absolute inset-0 grid-lines opacity-[0.04] pointer-events-none" />
+
+                  {/* Status indicator */}
+                  <div className="text-center mt-2 z-10">
+                    <span className="font-mono text-[0.6rem] tracking-[0.25em] text-muted-foreground/80 uppercase block">
+                      {status === "listening"
+                        ? (focusMode ? "Focus Mode · Transcribing" : "Assistant is Listening")
+                        : status === "thinking"
+                        ? "AUTOMIQ is thinking"
+                        : "AUTOMIQ is speaking"}
+                    </span>
+                  </div>
+
+                  {/* Morphing Glowing Orb Container */}
+                  <div className="relative w-44 h-44 flex items-center justify-center my-auto z-10">
+                    {/* Outer dynamic blur glow ring */}
+                    <motion.div
+                      className={`absolute inset-0 rounded-full blur-2xl opacity-40 transition-colors duration-500 ${
+                        status === "listening"
+                          ? "bg-emerald-500/40"
+                          : status === "thinking"
+                          ? "bg-purple-500/30"
+                          : "bg-accent/40"
+                      }`}
+                      animate={{
+                        scale: status === "listening"
+                          ? [1 + micVolume * 0.008, 1.1 + micVolume * 0.015]
+                          : status === "thinking"
+                          ? [1.02, 1.12, 1.02]
+                          : [1.05, 1.25, 1.05], // Speaking pulse
+                      }}
+                      transition={{
+                        duration: status === "thinking" ? 2.5 : (status === "speaking" ? 0.6 : 0.4),
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut"
+                      }}
+                    />
+
+                    {/* Secondary aura ripple */}
+                    <motion.div
+                      className={`absolute inset-4 rounded-full blur-md opacity-25 transition-colors duration-500 ${
+                        status === "listening"
+                          ? "bg-emerald-400/30"
+                          : status === "thinking"
+                          ? "bg-purple-400/20"
+                          : "bg-accent/30"
+                      }`}
+                      animate={{
+                        scale: status === "listening"
+                          ? [1, 1.15]
+                          : status === "thinking"
+                          ? [1.05, 0.95, 1.05]
+                          : [1.1, 0.9, 1.1], // Pulsing / blinking wave
+                      }}
+                      transition={{
+                        duration: status === "thinking" ? 2 : 0.8,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut"
+                      }}
+                    />
+
+                    {/* Primary Fluid Core Orb */}
+                    <motion.div
+                      className={`w-28 h-28 relative z-10 transition-all duration-700 shadow-inner overflow-hidden border cursor-pointer ${
+                        status === "listening"
+                          ? "border-emerald-500/40"
+                          : status === "thinking"
+                          ? "border-purple-500/40"
+                          : "border-accent/50"
+                      }`}
+                      style={{
+                        background: status === "listening"
+                          ? "radial-gradient(circle at 30% 30%, oklch(0.72 0.16 150) 0%, oklch(0.3 0.12 160) 100%)" // Emerald
+                          : status === "thinking"
+                          ? "radial-gradient(circle at 30% 30%, oklch(0.65 0.22 300) 0%, oklch(0.25 0.15 310) 100%)" // Purple
+                          : "radial-gradient(circle at 30% 30%, oklch(0.72 0.16 45) 0%, oklch(0.35 0.15 25) 100%)", // Accent Warm Ember
+                        boxShadow: status === "listening"
+                          ? `inset 0 0 20px rgba(255,255,255,0.2), 0 0 ${30 + micVolume * 0.5}px oklch(0.72 0.16 150 / 0.5)`
+                          : status === "thinking"
+                          ? `inset 0 0 20px rgba(255,255,255,0.2), 0 0 35px oklch(0.65 0.22 300 / 0.4)`
+                          : `inset 0 0 20px rgba(255,255,255,0.2), 0 0 40px oklch(0.72 0.16 45 / 0.65)`, // Speaking (strong glow)
+                      }}
+                      animate={{
+                        borderRadius: status === "listening"
+                          ? [
+                              "42% 58% 70% 30% / 45% 45% 55% 55%",
+                              "70% 30% 52% 48% / 60% 40% 60% 40%",
+                              "42% 58% 70% 30% / 45% 45% 55% 55%"
+                            ]
+                          : status === "thinking"
+                          ? [
+                              "50% 50% 50% 50% / 50% 50% 50% 50%",
+                              "45% 55% 45% 55% / 55% 45% 55% 45%",
+                              "50% 50% 50% 50% / 50% 50% 50% 50%"
+                            ]
+                          : [
+                              "45% 55% 70% 30% / 50% 60% 40% 50%",
+                              "60% 40% 50% 50% / 40% 50% 60% 50%",
+                              "45% 55% 70% 30% / 50% 60% 40% 50%"
+                            ],
+                        rotate: status === "thinking" ? [0, -360] : [0, 360],
+                        scale: status === "listening"
+                          ? 1 + micVolume * 0.005
+                          : status === "speaking"
+                          ? [1, 1.08, 0.98, 1.04, 1] // Voice waveform pulse / blink simulation
+                          : 1
+                      }}
+                      transition={{
+                        borderRadius: { duration: status === "thinking" ? 4 : (status === "speaking" ? 2.5 : 5), repeat: Infinity, ease: "easeInOut" },
+                        rotate: { duration: status === "thinking" ? 8 : 15, repeat: Infinity, ease: "linear" },
+                        scale: status === "speaking" 
+                          ? { duration: 1.2, repeat: Infinity, ease: "easeInOut" }
+                          : undefined
+                      }}
+                      onClick={endSession}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      {/* Glossy overlay effect for 3D sphere look */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/20 pointer-events-none rounded-full" />
+                      <div className="absolute top-2 left-4 w-12 h-6 bg-white/20 blur-[2px] rounded-[50%_50%_30%_30%] transform -rotate-12 pointer-events-none" />
+
+                      {/* Floating wave ripple inside the sphere */}
                       <motion.div
-                        className={`absolute inset-0 rounded-full blur-md opacity-35 transition-colors duration-500 ${
-                          status === "listening"
-                            ? "bg-red-500/30"
-                            : status === "thinking"
-                            ? "bg-purple-500/20"
-                            : "bg-accent/30"
-                        }`}
+                        className="absolute inset-0 bg-white/5 mix-blend-overlay"
                         animate={{
-                          scale: status === "listening"
-                            ? [1 + micVolume * 0.008, 1 + micVolume * 0.015]
-                            : status === "thinking"
-                            ? [1.02, 1.12, 1.02]
-                            : [1.08, 1.15, 1.08],
+                          y: ["-10%", "10%", "-10%"]
                         }}
                         transition={{
-                          duration: status === "thinking" ? 1.6 : 0.35,
+                          duration: 3,
                           repeat: Infinity,
                           ease: "easeInOut"
                         }}
                       />
-                      
-                      {/* Middle scaling ring */}
-                      <motion.div
-                        className={`absolute inset-3 rounded-full blur-sm opacity-55 transition-colors duration-500 ${
-                          status === "listening"
-                            ? "bg-red-500/20"
-                            : status === "thinking"
-                            ? "bg-purple-500/10"
-                            : "bg-accent/25"
-                        }`}
-                        style={{
-                          transform: status === "listening" ? `scale(${1 + micVolume * 0.004})` : undefined
-                        }}
-                      />
-
-                      {/* Central core Orb */}
-                      <motion.div
-                        onClick={endSession}
-                        className={`w-16 h-16 rounded-full flex items-center justify-center border relative z-10 cursor-pointer shadow-lg transition-all duration-500 group ${
-                          status === "listening"
-                            ? "bg-red-950/70 border-red-500/50 text-red-400"
-                            : status === "thinking"
-                            ? "bg-purple-950/70 border-purple-500/50 text-purple-400"
-                            : "bg-accent/15 border-accent/60 text-accent"
-                        }`}
-                        style={{
-                          boxShadow: status === "listening"
-                            ? `0 0 ${20 + micVolume * 0.3}px oklch(0.57 0.24 27 / 0.4)`
-                            : status === "thinking"
-                            ? `0 0 20px oklch(0.5 0.2 280 / 0.3)`
-                            : `0 0 25px oklch(0.72 0.16 45 / 0.45)`
-                        }}
-                        whileHover={{ scale: 1.02 }}
-                      >
-                        {/* Hover display to end call */}
-                        <div className="absolute inset-0 rounded-full bg-red-600/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                          <PhoneOff className="w-5 h-5 text-white" />
-                        </div>
-
-                        {status === "listening" ? (
-                          <Mic className="w-5 h-5 animate-pulse relative z-10" />
-                        ) : status === "thinking" ? (
-                          <Loader2 className="w-5 h-5 animate-spin relative z-10" />
-                        ) : (
-                          <Volume2 className="w-5 h-5 animate-bounce relative z-10" />
-                        )}
-                      </motion.div>
-                    </div>
-
-                    <div className="mt-2 text-center">
-                      <span className="font-mono text-[0.62rem] tracking-[0.2em] text-muted-foreground uppercase block">
-                        {status === "listening"
-                          ? (focusMode ? "Focus Mode: Transcribing..." : "Listening...")
-                          : status === "thinking"
-                          ? "Processing..."
-                          : "Speaking..."}
-                      </span>
-                      <span className="text-[0.52rem] text-muted-foreground/60 font-mono mt-0.5 block">
-                        {!focusMode && "You can speak to interrupt/barge-in anytime"}
-                        {focusMode && "Transcribing voice in real-time with noise suppression"}
-                      </span>
-                    </div>
+                    </motion.div>
                   </div>
-                )}
-              </div>
 
-              {/* Scrollable Conversation Logs */}
-              <div className="flex-1 overflow-y-auto p-5 space-y-4">
-                {chatHistory.map((msg, i) => (
-                  <div
-                    key={i}
-                    className={`flex flex-col max-w-[85%] ${
-                      msg.role === "user" ? "ml-auto items-end" : "mr-auto items-start"
-                    }`}
-                  >
-                    <span className="font-mono text-[0.55rem] tracking-widest text-muted-foreground uppercase mb-1">
-                      {msg.role === "user" ? "You" : "AUTOMIQ"}
-                    </span>
-                    <div
-                      className={`px-4 py-2.5 rounded-2xl text-xs leading-relaxed border ${
-                        msg.role === "user"
-                          ? "bg-accent/10 border-accent/20 text-foreground rounded-tr-none"
-                          : "bg-card border-border/80 text-foreground/90 rounded-tl-none"
-                      }`}
+                  {/* Real-time Subtitles / Live Text */}
+                  <div className="w-full px-6 min-h-16 flex flex-col items-center justify-center text-center z-10 mt-2">
+                    <AnimatePresence mode="wait">
+                      {status === "listening" ? (
+                        <motion.p
+                          key="listening-sub"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="text-foreground/90 text-sm font-medium tracking-wide max-w-xs leading-relaxed"
+                        >
+                          {interimUserText || (chatHistory[chatHistory.length - 1]?.role === "user" ? chatHistory[chatHistory.length - 1]?.text : "Listening... Speak now.")}
+                        </motion.p>
+                      ) : status === "thinking" ? (
+                        <motion.p
+                          key="thinking-sub"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="text-muted-foreground/60 text-xs tracking-wider font-mono animate-pulse"
+                        >
+                          Thinking...
+                        </motion.p>
+                      ) : (
+                        <motion.p
+                          key="speaking-sub"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="text-accent text-sm font-medium tracking-wide max-w-xs leading-relaxed"
+                        >
+                          {chatHistory[chatHistory.length - 1]?.role === "assistant" ? chatHistory[chatHistory.length - 1]?.text : "Speaking..."}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Bottom End Call Control */}
+                  <div className="z-10 mt-4">
+                    <motion.button
+                      onClick={endSession}
+                      className="flex items-center gap-2 bg-red-500/10 hover:bg-red-500/25 text-red-500 border border-red-500/20 hover:border-red-500/40 px-6 py-2.5 rounded-full font-mono text-[0.7rem] tracking-[0.2em] uppercase transition-all shadow-lg hover:shadow-red-500/5 cursor-pointer"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      {msg.text}
-                    </div>
+                      <PhoneOff className="w-3.5 h-3.5" /> End Call
+                    </motion.button>
                   </div>
-                ))}
-                {interimUserText && (
-                  <div className="flex flex-col max-w-[85%] ml-auto items-end">
-                    <span className="font-mono text-[0.55rem] tracking-widest text-muted-foreground uppercase mb-1">
-                      You (Speaking)
-                    </span>
-                    <div className="px-4 py-2.5 rounded-2xl text-xs leading-relaxed border bg-accent/10 border-accent/20 text-foreground rounded-tr-none">
-                      {interimUserText}
-                    </div>
-                  </div>
-                )}
-                <div ref={chatEndRef} />
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Bottom Status bar */}
