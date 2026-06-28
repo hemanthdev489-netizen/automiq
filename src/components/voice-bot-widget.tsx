@@ -35,7 +35,7 @@ export function VoiceBotWidget() {
   const [languageCode, setLanguageCode] = useState("en-IN");
   const [focusMode, setFocusMode] = useState(false); // Focus mode: transcribe only, no bot replies
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([
-    { role: "assistant", text: "Hello! I am AutoMiq's real-time voice agent. Tap 'Start Call' to talk to me hands-free." },
+    { role: "assistant", text: "Hello! I am AUTOMIQ's real-time voice agent. Tap 'Start Call' to talk to me hands-free." },
   ]);
   const [micVolume, setMicVolume] = useState(0);
 
@@ -701,7 +701,7 @@ export function VoiceBotWidget() {
             {/* Header */}
             <div className="px-6 py-4 border-b border-border/60 flex items-center justify-between bg-card/30">
               <div>
-                <h4 className="font-display italic text-2xl text-foreground font-medium tracking-wide">AutoMiq Live Agent</h4>
+                <h4 className="font-display italic text-2xl text-foreground font-medium tracking-wide">AUTOMIQ Live Agent</h4>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className={`h-1.5 w-1.5 rounded-full ${isSessionActive ? "bg-emerald-500 animate-pulse" : "bg-muted-foreground"}`} />
                   <span className="text-[0.65rem] font-mono tracking-widest uppercase text-muted-foreground">
@@ -882,7 +882,7 @@ export function VoiceBotWidget() {
                     }`}
                   >
                     <span className="font-mono text-[0.55rem] tracking-widest text-muted-foreground uppercase mb-1">
-                      {msg.role === "user" ? "You" : "AutoMiq"}
+                      {msg.role === "user" ? "You" : "AUTOMIQ"}
                     </span>
                     <div
                       className={`px-4 py-2.5 rounded-2xl text-xs leading-relaxed border ${

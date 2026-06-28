@@ -77,10 +77,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AutoMiq — AI Workforce Studio" },
+      { title: "AUTOMIQ — AI Workforce Studio" },
       { name: "description", content: "Voice agents, chat agents, SEO automation and custom SaaS. We don't automate tasks — we replace the wait." },
-      { name: "author", content: "AutoMiq" },
-      { property: "og:title", content: "AutoMiq — AI Workforce Studio" },
+      { name: "author", content: "AUTOMIQ" },
+      { property: "og:title", content: "AUTOMIQ — AI Workforce Studio" },
       { property: "og:description", content: "Built to work. Not to wait. Voice · Chat · SEO · SaaS." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

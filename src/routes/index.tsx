@@ -8,9 +8,9 @@ import { ChatAgentDemo, SeoDemo, SaasDemo, AutomationDemo } from "../components/
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "AutoMiq — AI Workforce Studio" },
+      { title: "AUTOMIQ — AI Workforce Studio" },
       { name: "description", content: "Voice agents, chat agents, SEO automation and custom SaaS. We don't automate tasks — we replace the wait." },
-      { property: "og:title", content: "AutoMiq — AI Workforce Studio" },
+      { property: "og:title", content: "AUTOMIQ — AI Workforce Studio" },
       { property: "og:description", content: "Built to work. Not to wait. Voice · Chat · SEO · SaaS." },
     ],
   }),
@@ -229,7 +229,7 @@ function AutoMiqOS({ services }: { services: Service[] }) {
                 transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
               />
               <div className="font-mono text-[0.6rem] tracking-[0.3em] text-muted-foreground">AI CORE</div>
-              <div className="font-display italic text-2xl mt-1">AutoMiq</div>
+              <div className="font-display italic text-2xl mt-1">AUTOMIQ</div>
             </div>
           </motion.div>
 
@@ -564,7 +564,10 @@ function Index() {
       {/* NAV */}
       <nav className="fixed top-4 left-0 right-0 z-40 px-4 sm:px-8 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2 group">
-          <img src="/automiq_logo.png" alt="AUTOMIQ" className="h-7 w-auto object-contain transition-transform group-hover:scale-105" />
+          <svg viewBox="0 0 32 32" className="h-7 w-7 text-foreground transition-transform group-hover:rotate-12">
+            <path fill="currentColor" d="M16 2l12 7v14l-12 7L4 23V9l12-7zm0 4.6L8 11v10l8 4.6 8-4.6V11l-8-4.4z" />
+          </svg>
+          <span className="font-mono text-sm tracking-widest">AUTOMIQ<sup className="text-[0.5rem]">.</sup></span>
         </a>
         <div className="hidden md:flex items-center gap-6 font-mono text-xs tracking-widest text-muted-foreground">
           <a href="#work" className="underline-grow">Work</a>
@@ -647,7 +650,7 @@ function Index() {
 
         <div className="absolute bottom-10 left-0 right-0 px-8 flex items-end justify-between font-mono text-xs tracking-widest text-muted-foreground">
           <div>
-            <div className="text-foreground">AutoMiq AI STUDIO</div>
+            <div className="text-foreground">AUTOMIQ AI STUDIO</div>
             <div className="mt-1">VOICE · CHAT · SEO · SAAS</div>
           </div>
           <motion.div
@@ -701,7 +704,7 @@ function Index() {
         <FadeUp>
           <div className="eyebrow">✦ The system</div>
           <h3 className="display-hero text-4xl sm:text-6xl md:text-7xl mt-4">
-            The AutoMiq <span className="font-display italic font-normal text-accent">Operating System.</span>
+            The AUTOMIQ <span className="font-display italic font-normal text-accent">Operating System.</span>
           </h3>
           <p className="mt-6 max-w-xl text-muted-foreground">
             One AI core. Five departments wired into your business — voice, automation, conversations, growth, and custom software.
@@ -831,9 +834,9 @@ function Index() {
       {/* WHY US */}
       <section className="relative px-6 sm:px-10 py-32 max-w-7xl mx-auto">
         <FadeUp>
-          <div className="eyebrow mb-6">— Why AutoMiq</div>
+          <div className="eyebrow mb-6">— Why AUTOMIQ</div>
           <h3 className="display-hero text-4xl md:text-6xl max-w-4xl">
-            Why businesses choose <span className="font-display italic font-normal text-accent">AutoMiq.</span>
+            Why businesses choose <span className="font-display italic font-normal text-accent">AUTOMIQ.</span>
           </h3>
         </FadeUp>
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -903,7 +906,7 @@ function Index() {
       <footer className="border-t border-border px-6 sm:px-10 py-12 font-mono text-xs tracking-widest text-muted-foreground">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           <div>
-            <div className="text-foreground">AutoMiq AI STUDIO © {new Date().getFullYear()}</div>
+            <div className="text-foreground">AUTOMIQ AI STUDIO © {new Date().getFullYear()}</div>
             <div className="mt-2">hello@automiq.ai · +91 XXXXX XXXXX</div>
           </div>
           <div className="md:text-center">VOICE AGENTS · CHAT AGENTS · SEO · SAAS</div>
