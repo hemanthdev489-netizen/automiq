@@ -15,12 +15,14 @@ const voiceRequestSchema = z.object({
 });
 
 const getOpenAiKey = () => 
+  (typeof globalThis !== "undefined" && (globalThis as any).__env__?.OPENAI_API_KEY) ||
   (typeof process !== "undefined" ? process.env.OPENAI_API_KEY : undefined) || 
   (typeof globalThis !== "undefined" ? (globalThis as any).OPENAI_API_KEY : undefined) || 
   import.meta.env.VITE_OPENAI_API_KEY || 
   "";
 
 const getSarvamKey = () => 
+  (typeof globalThis !== "undefined" && (globalThis as any).__env__?.SARVAM_API_KEY) ||
   (typeof process !== "undefined" ? process.env.SARVAM_API_KEY : undefined) || 
   (typeof globalThis !== "undefined" ? (globalThis as any).SARVAM_API_KEY : undefined) || 
   import.meta.env.VITE_SARVAM_API_KEY || 
