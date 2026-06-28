@@ -42,6 +42,7 @@ export function VoiceBotWidget() {
   const [micVolume, setMicVolume] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showTranscriptOverlay, setShowTranscriptOverlay] = useState(false);
 
   // Recording and Stream Refs
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
