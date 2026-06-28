@@ -145,7 +145,14 @@ export function VoiceBotWidget() {
     
     if (audioPlaybackRef.current) {
       audioPlaybackRef.current.pause();
+    } else {
+      audioPlaybackRef.current = new Audio();
     }
+    // Pre-play a tiny silent WAV file within the user click context to unlock iOS/Safari audio autoplay restrictions
+    try {
+      audioPlaybackRef.current.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAAA";
+      audioPlaybackRef.current.play().catch(() => {});
+    } catch (e) {}
 
     try {
       console.log("[VoiceAgent] Initializing mic stream with hardware noise suppression...");
@@ -609,15 +616,18 @@ export function VoiceBotWidget() {
 
         const audioUrl = `data:audio/wav;base64,${chunk.audio}`;
         
-        if (audioPlaybackRef.current) {
-          audioPlaybackRef.current.pause();
+        let audio = audioPlaybackRef.current;
+        if (!audio) {
+          audio = new Audio();
+          audioPlaybackRef.current = audio;
+        } else {
+          audio.pause();
         }
 
-        const audio = new Audio(audioUrl);
-        audioPlaybackRef.current = audio;
+        // Reset source and update event listeners
+        audio.src = audioUrl;
 
         audio.onended = () => {
-          audioPlaybackRef.current = null;
           isPlayingRef.current = false;
           // Play next in queue
           playNextStreamingChunk();
@@ -626,7 +636,6 @@ export function VoiceBotWidget() {
 
         audio.onerror = (e) => {
           console.error(`[VoiceAgent] Error playing audio chunk ${nextIndex}:`, e);
-          audioPlaybackRef.current = null;
           isPlayingRef.current = false;
           playNextStreamingChunk();
           checkSessionTurnCompletion();
@@ -634,7 +643,6 @@ export function VoiceBotWidget() {
 
         audio.play().catch((err) => {
           console.error(`[VoiceAgent] Autoplay blocked for chunk ${nextIndex}:`, err);
-          audioPlaybackRef.current = null;
           isPlayingRef.current = false;
           playNextStreamingChunk();
           checkSessionTurnCompletion();
