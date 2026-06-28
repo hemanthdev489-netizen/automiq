@@ -63,7 +63,6 @@ export const processVoice = createServerFn({ method: "POST" })
   })
   .handler(async ({ data }) => {
     const { audioBase64, text, languageCode, focusMode, history } = data;
-
     try {
       let transcript = "";
 
