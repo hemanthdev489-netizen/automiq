@@ -564,10 +564,7 @@ function Index() {
       {/* NAV */}
       <nav className="fixed top-4 left-0 right-0 z-40 px-4 sm:px-8 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2 group">
-          <svg viewBox="0 0 32 32" className="h-7 w-7 text-foreground transition-transform group-hover:rotate-12">
-            <path fill="currentColor" d="M16 2l12 7v14l-12 7L4 23V9l12-7zm0 4.6L8 11v10l8 4.6 8-4.6V11l-8-4.4z" />
-          </svg>
-          <span className="font-mono text-sm tracking-widest">AutoMiq<sup className="text-[0.5rem]">.</sup></span>
+          <img src="/automiq_logo.png" alt="AUTOMIQ" className="h-7 w-auto object-contain transition-transform group-hover:scale-105" />
         </a>
         <div className="hidden md:flex items-center gap-6 font-mono text-xs tracking-widest text-muted-foreground">
           <a href="#work" className="underline-grow">Work</a>
