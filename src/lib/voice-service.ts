@@ -14,13 +14,13 @@ const voiceRequestSchema = z.object({
   ).optional(),
 });
 
-const OPENAI_API_KEY = 
+const getOpenAiKey = () => 
   (typeof process !== "undefined" ? process.env.OPENAI_API_KEY : undefined) || 
   (typeof globalThis !== "undefined" ? (globalThis as any).OPENAI_API_KEY : undefined) || 
   import.meta.env.VITE_OPENAI_API_KEY || 
   "";
 
-const SARVAM_API_KEY = 
+const getSarvamKey = () => 
   (typeof process !== "undefined" ? process.env.SARVAM_API_KEY : undefined) || 
   (typeof globalThis !== "undefined" ? (globalThis as any).SARVAM_API_KEY : undefined) || 
   import.meta.env.VITE_SARVAM_API_KEY || 
@@ -31,7 +31,7 @@ async function callSarvamTts(text: string, languageCode: string): Promise<string
   const ttsResponse = await fetch("https://api.sarvam.ai/text-to-speech", {
     method: "POST",
     headers: {
-      "api-subscription-key": SARVAM_API_KEY,
+      "api-subscription-key": getSarvamKey(),
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -89,7 +89,7 @@ export const processVoice = createServerFn({ method: "POST" })
         const sttResponse = await fetch("https://api.sarvam.ai/speech-to-text", {
           method: "POST",
           headers: {
-            "api-subscription-key": SARVAM_API_KEY,
+            "api-subscription-key": getSarvamKey(),
           },
           body: formData,
         });
@@ -180,7 +180,7 @@ Your instructions:
             const openAiRes = await fetch("https://api.openai.com/v1/chat/completions", {
               method: "POST",
               headers: {
-                "Authorization": `Bearer ${OPENAI_API_KEY}`,
+                "Authorization": `Bearer ${getOpenAiKey()}`,
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
